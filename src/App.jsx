@@ -1,12 +1,12 @@
 import React from "react"
-import moment from "moment"
+// import moment from "moment"
 import Die from "./Die"
 // import { nanoid } from 'https://cdn.jsdelivr.net/npm/nanoid/nanoid.js'
 import {nanoid} from 'nanoid'
 import 'react-native-get-random-values'
 import Confetti from 'react-confetti'
 
-let date_create = moment().format("YYYY-MM-DD hh:mm:ss")
+// let date_create = moment().format("YYYY-MM-DD hh:mm:ss")
 
 export default function App() {
 
