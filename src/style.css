@@ -20,13 +20,13 @@
 
 body {
   margin: 0;
-  background-color: #0B2434; 
+  background-color: #6D8700; /* #0B2434;  */
   padding: 20px;
 }
 
 
 main {
-  background-color: #F5F5F5;
+  background-color: #D8E46B; /* #F5F5F5;*/
   height: 400px;
   max-width: 400px;
   border-radius: 5px;
@@ -80,7 +80,7 @@ main {
   width: 150px;
   border: none;
   border-radius: 6px;
-  background-color: #5035FF;
+  background-color: #9DB300; /* #5035FF;*/
   color: white;
   font-size: 1.2rem;
   cursor: pointer;
