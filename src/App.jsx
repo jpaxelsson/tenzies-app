@@ -1,4 +1,5 @@
 import React from "react"
+import { useState, useEffect } from "react"
 // import moment from "moment"
 import Die from "./Die"
 // import { nanoid } from 'https://cdn.jsdelivr.net/npm/nanoid/nanoid.js'
@@ -10,17 +11,29 @@ import Confetti from 'react-confetti'
 
 export default function App() {
 
-    const [dice, setDice] = React.useState(allNewDice)
-    const [tenzies, setTenzies] = React.useState(false)
+    const [dice, setDice] = useState(allNewDice)
+    const [tenzies, setTenzies] = useState(false)
+    const [rolls, setRolls] = useState(0)
+    const [lowsetRolls, setLowestRolls] = useState(() => {
+        const saved = localStorage.getItem("lowsetRolls");
+        const initialValue = JSON.parse(saved);
+        return initialValue || -1;
+      });
 
-    React.useEffect(() => {
+    useEffect(() => {
         const allHeld = dice.every(die => die.isHeld)
         const firstValue = dice[0].value
         const allSameValue = dice.every(die => die.value === firstValue)
         if (allHeld && allSameValue) {
             setTenzies(true)
+            if (lowsetRolls === -1 || rolls < lowsetRolls)
+                setLowestRolls(rolls)
         }
-    }, [dice])
+    }, [dice, rolls, lowsetRolls])
+
+    useEffect(() => {
+        localStorage.setItem("lowsetRolls", JSON.stringify(lowsetRolls));
+      }, [lowsetRolls]);
 
     function generateNewDie() {
         return {
@@ -31,22 +44,17 @@ export default function App() {
     }
 
     function allNewDice() {
-        // const newDice = []
-
-        // for (let i = 0; i < 10; i++) {
-        //     newDice.push(generateNewDie())
-        // }
-
-        // return newDice
         return Array(10).fill().map((v, i) => generateNewDie()); 
     }
 
     function rollDice() {
+        setRolls(rolls+1)
         if (!tenzies) {
             setDice(oldDice => oldDice.map(die => (die.isHeld ? die : generateNewDie())))
         } else {
             setTenzies(false)
             setDice(allNewDice())
+            setRolls(0)
         }
     }
 
@@ -58,15 +66,23 @@ export default function App() {
 
     return (<>      
           {/* <main>{date_create}</main> */}
+          {/* {tenzies ? <Confetti /> : ""} */}
+          
+          
           <main>
-            {/* {tenzies ? <Confetti /> : ""} */}
             {tenzies && <Confetti numberOfPieces="2000" />}
             <h1 className="title">TENZIES</h1>
-            <p className="instructions">Roll until all the dice are the same. Click each die to freeze it at its current value between rolls.</p>
+
+            <div className="score">
+                <div>{lowsetRolls > -1 ? lowsetRolls : ''}</div> 
+                <div>{rolls}</div>
+            </div>
+            
+            <p className="instructions">Slå tärningarna tills alla visar samma värde. Klicka på en tärning för att frysa dess värde mellan slag.</p>
             <div className="dice-container">
                 {diceElements}
             </div>
-            <button className='roll-dice' onClick={rollDice}>{tenzies ? "New Game" : "Roll"}</button>
+            <button className='roll-dice' onClick={rollDice}>{tenzies ? "Nytt spel" : "Slå"}</button>
           </main>
         </>
     )
