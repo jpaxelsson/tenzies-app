@@ -31,18 +31,14 @@ export default function App() {
     }
 
     function allNewDice() {
-        // return Array.from({length: 10}, () => Math.ceil(Math.random() * 6))
-        // return Array.from({length: 10}, ({value,isHeld,id}) => {
-        //     generateNewDie()
-        // })
+        // const newDice = []
 
-        const newDice = []
+        // for (let i = 0; i < 10; i++) {
+        //     newDice.push(generateNewDie())
+        // }
 
-        for (let i = 0; i < 10; i++) {
-            newDice.push(generateNewDie())
-        }
-
-        return newDice
+        // return newDice
+        return Array(10).fill().map((v, i) => generateNewDie()); 
     }
 
     function rollDice() {
